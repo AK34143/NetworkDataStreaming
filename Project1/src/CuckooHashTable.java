@@ -10,8 +10,10 @@ public class CuckooHashTable {
         // Number of hashes
         int k = 3;
         int s = 2;
-        int[] HashTable = getRandomArray(k,Integer.MAX_VALUE);//Hashes
-        int[] flows = getRandomArray(m,Integer.MAX_VALUE);//init with 1000 random numbers
+
+        Helper helper = new Helper();
+        int[] HashTable = helper.getRandomArray(k,Integer.MAX_VALUE);//Hashes
+        int[] flows = helper.getRandomArray(m,Integer.MAX_VALUE);//init with 1000 random numbers
         int[] table = new int[N]; // Table entries
 
         for(int i=0;i<m;i++){
@@ -68,12 +70,12 @@ public class CuckooHashTable {
         return false;
     }
 
-    static int[] getRandomArray(int size, int range){
-        Random r = new Random();
-        int[] numbers = new int[size];
-        for (int i = 0; i < numbers.length; i++) {
-            numbers[i] = r.nextInt(range)+1;
-        }
-        return numbers;
-    }
+//    static int[] getRandomArray(int size, int range){
+//        Random r = new Random();
+//        int[] numbers = new int[size];
+//        for (int i = 0; i < numbers.length; i++) {
+//            numbers[i] = r.nextInt(range)+1;
+//        }
+//        return numbers;
+//    }
 }

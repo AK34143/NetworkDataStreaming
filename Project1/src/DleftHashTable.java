@@ -11,9 +11,10 @@ public class DleftHashTable {
         // Number of hashes
 //        int k = 3;
         int segments = 4;
+        Helper helper = new Helper();
 
-        int[] HashTable = getRandomArray(segments,Integer.MAX_VALUE);//Hashes
-        int[] flows = getRandomArray(m,Integer.MAX_VALUE);//init with 1000 random numbers
+        int[] HashTable = helper.getRandomArray(segments,Integer.MAX_VALUE);//Hashes
+        int[] flows = helper.getRandomArray(m,Integer.MAX_VALUE);//init with 1000 random numbers
         int[] table = new int[N]; // Table entries
 
         int segSize = N/segments;
@@ -43,12 +44,12 @@ public class DleftHashTable {
 
     }
 
-    static int[] getRandomArray(int size, int range){
-        Random r = new Random();
-        int[] numbers = new int[size];
-        for (int i = 0; i < numbers.length; i++) {
-            numbers[i] = r.nextInt(range)+1;
-        }
-        return numbers;
-    }
+//    static int[] getRandomArray(int size, int range){
+//        Random r = new Random();
+//        int[] numbers = new int[size];
+//        for (int i = 0; i < numbers.length; i++) {
+//            numbers[i] = r.nextInt(range)+1;
+//        }
+//        return numbers;
+//    }
 }
