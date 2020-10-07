@@ -1,7 +1,3 @@
-import java.util.HashSet;
-import java.util.Random;
-import java.util.Set;
-
 public class DleftHashTable {
     public static void main(String []args){
         //Table entries
@@ -9,7 +5,6 @@ public class DleftHashTable {
         // Number of flows
         int m = 1000;
         // Number of hashes
-//        int k = 3;
         int segments = 4;
         Helper helper = new Helper();
 
@@ -18,38 +13,35 @@ public class DleftHashTable {
         int[] table = new int[N]; // Table entries
 
         int segSize = N/segments;
+        int count = 0;
 
         for(int i=0;i<m;i++){
             int flowId = flows[i];
-            for(int j=0;j<segments;j++){
-                int index = flowId ^ HashTable[j];
+
+//            for(int j=0;j<segments;j++){
+                int index = flowId ^ HashTable[0];
                 index = index%segSize;
+                int k = 0;
                 while(index<N){
                     if(table[index] == 0) {
                         table[index] = flowId;
                         break;
                     }
-                    index = index+segSize;
+//                    System.out.println("hello");
+                    k++;
+                    if(k==segments) break;
+                    index = flowId ^ HashTable[k];
+                    index = index%segSize;
+                    index = index+(segSize*(k));
                 }
-//                System.out.println(index);
-                //set.add(index);
-//
-
-            }
+//            }
         }
-//        System.out.println(set.size());
-//        for(int i=0;i<table.length;i++){
-//            System.out.println(table[i]);
-//        }
+
+        for(int i=0;i<table.length;i++){
+            System.out.println(table[i]);
+            if(table[i]!=0) count++;
+        }
+        System.out.println("count = "+count);
 
     }
-
-//    static int[] getRandomArray(int size, int range){
-//        Random r = new Random();
-//        int[] numbers = new int[size];
-//        for (int i = 0; i < numbers.length; i++) {
-//            numbers[i] = r.nextInt(range)+1;
-//        }
-//        return numbers;
-//    }
 }
