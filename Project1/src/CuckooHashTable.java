@@ -48,7 +48,7 @@ public class CuckooHashTable {
     }
 
     static boolean shift(int index, int[] HashTable, int[] table, int k, int s, int N){
-        if(s<=0) return false;
+        if(s<=0 || index>=N) return false;
         int tableEntry = table[index];
         for(int i=0;i<k;i++){
             int newIndex = tableEntry ^ HashTable[i];

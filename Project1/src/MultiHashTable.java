@@ -20,8 +20,8 @@ public class MultiHashTable {
                 index = index%N;
                 if(table[index] == 0){
                     table[index] = flowId;
+                    break;
                 }
-
             }
         }
         for(int i=0;i<table.length;i++){
