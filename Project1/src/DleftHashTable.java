@@ -1,14 +1,14 @@
 public class DleftHashTable {
     public static void main(String []args){
         //Table entries
-        int N = 1000;
+        int N = Integer.parseInt(args[0]);
         // Number of flows
-        int m = 1000;
+        int m = Integer.parseInt(args[1]);
         // Number of hashes
-        int segments = 4;
+        int segments = Integer.parseInt(args[2]);
         Helper helper = new Helper();
 
-        int[] HashTable = helper.getRandomArray(segments,Integer.MAX_VALUE);//Hashes
+        int[] HashFunctions = helper.getRandomArray(segments,Integer.MAX_VALUE);//Hashes
         int[] flows = helper.getRandomArray(m,Integer.MAX_VALUE);//init with 1000 random numbers
         int[] table = new int[N]; // Table entries
 
@@ -19,7 +19,7 @@ public class DleftHashTable {
             int flowId = flows[i];
 
 //            for(int j=0;j<segments;j++){
-                int index = flowId ^ HashTable[0];
+                int index = flowId ^ HashFunctions[0];
                 index = index%segSize;
                 int k = 0;
                 while(index<N){
@@ -30,7 +30,7 @@ public class DleftHashTable {
 //                    System.out.println("hello");
                     k++;
                     if(k==segments) break;
-                    index = flowId ^ HashTable[k];
+                    index = flowId ^ HashFunctions[k];
                     index = index%segSize;
                     index = index+(segSize*(k));
                 }
