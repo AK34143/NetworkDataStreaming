@@ -2,12 +2,20 @@ public class CuckooHashTable {
 
     public static void main(String []args){
         //Table entries
-        int N = Integer.parseInt(args[0]);
+        int N = 1000;
+        if(args.length!=0)
+            N = Integer.parseInt(args[0]);
         // Number of flows
-        int m = Integer.parseInt(args[1]);
+        int m = 1000;
+        if(args.length!=0)
+            m = Integer.parseInt(args[1]);
         // Number of hashes
-        int k = Integer.parseInt(args[2]);
-        int s = Integer.parseInt(args[3])   ;
+        int k = 3;
+        if(args.length!=0)
+            k = Integer.parseInt(args[2]);
+        int s = 2;
+        if(args.length!=0)
+            s = Integer.parseInt(args[3])   ;
 
         Helper helper = new Helper();
         int[] HashFunctions = helper.getRandomArray(k,Integer.MAX_VALUE);//Hashes
@@ -48,12 +56,12 @@ public class CuckooHashTable {
     }
 
     static boolean shift(int index, int[] HashFunctions, int[] table, int k, int s, int N){
-        if(s<=0 || index>=N) return false;
+        if(s<=0) return false;
         int tableEntry = table[index];
         for(int i=0;i<k;i++){
             int newIndex = tableEntry ^ HashFunctions[i];
             newIndex = newIndex%N;
-            if(newIndex!=index && newIndex<N && table[newIndex]==0){
+            if(newIndex!=index && table[newIndex]==0){
                 table[newIndex] = tableEntry;
                 return true;
             }

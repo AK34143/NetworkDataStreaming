@@ -1,11 +1,17 @@
 public class DleftHashTable {
     public static void main(String []args){
         //Table entries
-        int N = Integer.parseInt(args[0]);
+        int N = 1000;
+        if(args.length!=0)
+            N = Integer.parseInt(args[0]);
         // Number of flows
-        int m = Integer.parseInt(args[1]);
+        int m = 1000;
+        if(args.length!=0)
+            m = Integer.parseInt(args[1]);
         // Number of hashes
-        int segments = Integer.parseInt(args[2]);
+        int segments = 4;
+        if(args.length!=0)
+            segments = Integer.parseInt(args[2]);
         Helper helper = new Helper();
 
         int[] HashFunctions = helper.getRandomArray(segments,Integer.MAX_VALUE);//Hashes
@@ -17,24 +23,20 @@ public class DleftHashTable {
 
         for(int i=0;i<m;i++){
             int flowId = flows[i];
-
-//            for(int j=0;j<segments;j++){
-                int index = flowId ^ HashFunctions[0];
-                index = index%segSize;
-                int k = 0;
-                while(index<N){
-                    if(table[index] == 0) {
-                        table[index] = flowId;
-                        break;
-                    }
-//                    System.out.println("hello");
-                    k++;
-                    if(k==segments) break;
-                    index = flowId ^ HashFunctions[k];
-                    index = index%segSize;
-                    index = index+(segSize*(k));
+            int index = flowId ^ HashFunctions[0];
+            index = index%segSize;
+            int k = 0;
+            while(index<N){
+                if(table[index] == 0) {
+                    table[index] = flowId;
+                    break;
                 }
-//            }
+                k++;
+                if(k==segments) break;
+                index = flowId ^ HashFunctions[k];
+                index = index%segSize;
+                index = index+(segSize*(k));
+            }
         }
 
         for(int i=0;i<table.length;i++){
