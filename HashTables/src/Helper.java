@@ -13,12 +13,14 @@ public class Helper {
         int[] numbers = new int[size];
         Set<Integer> randNums = new HashSet<>();
         while(randNums.size()<size){
+            // generate random numbers till the given size is reached
             randNums.add(r.nextInt(range)+1);
         }
 
         int i = 0;
         Iterator<Integer> it = randNums.iterator();
         while(it.hasNext()){
+            // store random numbers into the array
             numbers[i] = it.next();
             i++;
         }

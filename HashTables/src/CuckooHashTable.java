@@ -1,3 +1,5 @@
+import java.io.*;
+
 public class CuckooHashTable {
 
     public static void main(String []args){
@@ -27,19 +29,21 @@ public class CuckooHashTable {
             int flowId = flows[i];
             boolean flag = false;
             for(int j=0;j<k;j++){
-                int index = flowId ^ HashFunctions[j];
+                int index = flowId ^ HashFunctions[j]; /** apply XOR to flowId and hasfunction to get an index */
                 index = index%N;
-                if(index<N && table[index] == 0){
+                if(index<N && table[index] == 0){/** If there is no table entry present at index, place the flowId at index */
                     table[index] = flowId;
-                    flag = true;
+                    flag = true; /** Flag to check if the entry is placed */
                     break;
                 }
             }
             if(!flag){
+                /** Cuckoo steps are needed */
                 for(int j=0;j<k;j++){
-                    int index = flowId ^ HashFunctions[j];
+                    int index = flowId ^ HashFunctions[j]; /** apply XOR to flowId and hasfunction to get an index */
                     index = index%N;
-                    if(shift(index, HashFunctions, table, k,s,N)){
+                    if(shift(index, HashFunctions, table, k,s,N)){ 
+                        /** If cuckoo steps are satisfied place flowId in the index and move to the next flow */
                         table[index] = flowId;
                         break;
                     }
@@ -47,30 +51,47 @@ public class CuckooHashTable {
             }
         }
 
+        /** Count number of non-zero flowIds */
         for(int i=0;i<table.length;i++){
-            System.out.println(table[i]);
             if(table[i]!=0) count++;
         }
-        System.out.println("count = "+count);
+
+        /** Write count and the table entries into a file */
+        BufferedWriter writer = null;
+        try {
+            writer = new BufferedWriter(new FileWriter("out/cuckooHash_output.txt"));
+            writer.write(count+"\n");
+
+            for(int i=0;i<table.length;i++) {
+                writer.append(table[i]+"\n");
+
+            }
+            writer.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
 
     }
 
     static boolean shift(int index, int[] HashFunctions, int[] table, int k, int s, int N){
-        if(s<=0) return false;
+        if(s<=0) return false; /** Base case */
         int tableEntry = table[index];
         for(int i=0;i<k;i++){
-            int newIndex = tableEntry ^ HashFunctions[i];
+            int newIndex = tableEntry ^ HashFunctions[i]; /** apply XOR to flowId and hasfunction to get new index */
             newIndex = newIndex%N;
-            if(newIndex!=index && table[newIndex]==0){
+            if(newIndex!=index && table[newIndex]==0){ 
+                /** If the new index is not equal to the previous index and the table entry in the new entry is empty */
                 table[newIndex] = tableEntry;
                 return true;
             }
         }
 
         for(int i=0;i<k;i++){
-            int newIndex = tableEntry ^ HashFunctions[i];
+            int newIndex = tableEntry ^ HashFunctions[i]; /** apply XOR to flowId and hasfunction to get new index */
             newIndex = newIndex%N;
             if(newIndex!=index && shift(newIndex, HashFunctions, table, k,s-1,N)){
+                /** If the new index is not equal to the previous index and previous cuckoo steps is true */
                 table[newIndex] = tableEntry;
                 return true;
             }

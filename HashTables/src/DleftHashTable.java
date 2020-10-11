@@ -1,3 +1,5 @@
+import java.io.*;
+
 public class DleftHashTable {
     public static void main(String []args){
         //Table entries
@@ -21,29 +23,44 @@ public class DleftHashTable {
         int segSize = N/segments;
         int count = 0;
 
-        for(int i=0;i<m;i++){
+        for(int i=0;i<m;i++){ /** for each flow */
             int flowId = flows[i];
-            int index = flowId ^ HashFunctions[0];
+            int index = flowId ^ HashFunctions[0]; /** apply XOR to flowId and first segment hasfunction to get an index */
             index = index%segSize;
             int k = 0;
             while(index<N){
+                /** if there is no entry present at the index in the table, place the flowId in that position */
                 if(table[index] == 0) {
                     table[index] = flowId;
                     break;
                 }
                 k++;
                 if(k==segments) break;
-                index = flowId ^ HashFunctions[k];
-                index = index%segSize;
-                index = index+(segSize*(k));
+                int ind = flowId ^ HashFunctions[k]; /** apply XOR to flowId and next segment hasfunction to get new index int the next segment*/
+                ind = ind%segSize;
+                index = ind+(segSize*(k)); /** update index to get the actual index of the array */
             }
         }
 
+        /** Count number of non-zero flowIds */
         for(int i=0;i<table.length;i++){
-            System.out.println(table[i]);
             if(table[i]!=0) count++;
         }
-        System.out.println("count = "+count);
+
+        /** Write count and the table entries into a file */
+        BufferedWriter writer = null;
+        try {
+            writer = new BufferedWriter(new FileWriter("out/dleftHash_output.txt"));
+            writer.write(count+"\n");
+
+            for(int i=0;i<table.length;i++) {
+                writer.append(table[i]+"\n");
+
+            }
+            writer.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
 
     }
 }
