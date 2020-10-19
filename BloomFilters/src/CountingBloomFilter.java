@@ -1,3 +1,6 @@
+import java.io.BufferedWriter;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Set;
@@ -10,6 +13,14 @@ public class CountingBloomFilter {
         int a = 500; // No. of elements to be added
         int c = 10000;//No. of counters in the filter
         int h = 7; // No. of hashes
+
+        if(args.length==5){
+            e = Integer.parseInt(args[0]);
+            r = Integer.parseInt(args[1]);
+            a = Integer.parseInt(args[2]);
+            c = Integer.parseInt(args[3]);
+            h = Integer.parseInt(args[4]);
+        }
 
         Helper helper = new Helper();
 //        int[] elements_A = helper.getRandomArray(e,Integer.MAX_VALUE);
@@ -93,11 +104,21 @@ public class CountingBloomFilter {
             while(j<h){
                 int index = element ^ hashes[j];
                 index = index % c;
-                if(filters[index]==0) break;
+                if(filters[index]==0) break;/** If any element is not encoded */
                 j++;
             }
             if(j==h) count++;
         }
-        System.out.println("Lookup count = "+count);
+
+        /** Write count and the table entries into a file */
+        BufferedWriter writer = null;
+        try {
+            writer = new BufferedWriter(new FileWriter("out/countingBloomFilter_output.txt"));
+            writer.write("count = "+count+"\n");
+            writer.close();
+        } catch (IOException ex) {
+            ex.printStackTrace();
+        }
+//        System.out.println("Lookup count = "+count);
     }
 }

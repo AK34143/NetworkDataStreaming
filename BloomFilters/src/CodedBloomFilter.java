@@ -1,3 +1,6 @@
+import java.io.BufferedWriter;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.util.Iterator;
 import java.util.Set;
 
@@ -10,6 +13,13 @@ public class CodedBloomFilter {
         int b = 30000; // No. of bits in each filter
         int h = 7; // No. of hashes
 
+        if(args.length==5){
+            g = Integer.parseInt(args[0]);
+            e = Integer.parseInt(args[1]);
+            f = Integer.parseInt(args[2]);
+            b = Integer.parseInt(args[3]);
+            h = Integer.parseInt(args[4]);
+        }
 
         int[][] bloomFilters = new int[f][b];
         char[][] codes = new char[g][f];
@@ -61,6 +71,7 @@ public class CodedBloomFilter {
         }
 
         /** Lookup **/
+
         int count = 0;
         /** For each set */
         for(int i=0;i<sets.length;i++) {
@@ -68,41 +79,38 @@ public class CodedBloomFilter {
             for (int k=0; k<sets[0].length;k++) {
                 int element = sets[i][k];
                 StringBuilder sb = new StringBuilder();
-                int flag = 1;
                 /** For each bloom filter */
                 for (int j=0;j<bloomFilters.length;j++) {
-//                    for (int l = 0; l < hashes.length; l++) {
-//                        int encode = element ^ hashes[l];
-//                        encode = encode % b;
-//                        if(i==0){
-//                            System.out.println();
-//                        }
-//                        if (bloomFilters[j][encode] == 0) {
-//                            flag = 0;
-//                            break;
-//                        }
-//                    }
                     int l=0;
                     while(l<h){
                         int encode = element ^ hashes[l];
                         encode = encode%b;
-                        if(bloomFilters[j][encode] == 0){ /** If any filter is not encoded */
+                        if(bloomFilters[j][encode] == 0){ /** If any element is not encoded */
                             break;
                         }
                         l++;
                     }
+                    /** Reconstruct the code */
                     if(l==h) sb.append('1');
                     else sb.append('0');
-
                 }
-//                System.out.println(String.valueOf(codes[i])+" "+sb.toString());
+                /** Validate the new code with the binary code of the set i */
                 if(String.valueOf(codes[i]).equals(sb.toString())){
                     count++;
                 }
 
             }
         }
-        System.out.println(count);
+//        System.out.println(count);
+        /** Write count and the table entries into a file */
+        BufferedWriter writer = null;
+        try {
+            writer = new BufferedWriter(new FileWriter("out/codedBloomFilter_output.txt"));
+            writer.write("count = "+count+"\n");
+            writer.close();
+        } catch (IOException ex) {
+            ex.printStackTrace();
+        }
     }
 
     static void fillSets(char[][] codes, int g, int f){
@@ -111,7 +119,6 @@ public class CodedBloomFilter {
             while(str.length()!=f)
                 str = '0'+str;
             codes[i] = str.toCharArray();
-//            System.out.println(s_i[i]);
         }
     }
 }
