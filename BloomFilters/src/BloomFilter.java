@@ -17,26 +17,10 @@ public class BloomFilter {
             b = Integer.parseInt(args[2]);
         }
 
-        Helper h = new Helper();
-        Set<Integer> randHashes = h.getRandomSet(k,Integer.MAX_VALUE);
-        int h_i = 0;
-        int[] hashes = new int[k];
-        Iterator<Integer> it = randHashes.iterator();
-        while(it.hasNext()){
-            // store random numbers into the array
-            hashes[h_i] = it.next();
-            h_i++;
-        }
+        Helper helper = new Helper();
 
-        Set<Integer> randElementsA = h.getRandomSet(e,Integer.MAX_VALUE);
-        int e_i = 0;
-        int[] elementsA = new int[e];
-        it = randElementsA.iterator();
-        while(it.hasNext()){
-            // store random numbers into the array
-            elementsA[e_i] = it.next();
-            e_i++;
-        }
+        int[] hashes = helper.getRandomArray(k,Integer.MAX_VALUE);
+        int[] elementsA = helper.getRandomArray(e,Integer.MAX_VALUE);
 
         int[] filters = new int[b];
 
@@ -67,19 +51,9 @@ public class BloomFilter {
             }
             if(j==k) countA++;
         }
-        System.out.println("Lookup count in A = "+countA);
 
-//        int[] elementsB = h.getRandomArray(e,Integer.MAX_VALUE);
-
-        Set<Integer> randElementsB = h.getRandomSet(e,Integer.MAX_VALUE);
-        e_i = 0;
-        int[] elementsB = new int[e];
-        it = randElementsB.iterator();
-        while(it.hasNext()){
-            // store random numbers into the array
-            elementsB[e_i] = it.next();
-            e_i++;
-        }
+        /** Elements B */
+        int[] elementsB = helper.getRandomArray(e,Integer.MAX_VALUE);
 
         int countB=0;
         /** Lookup */
@@ -96,7 +70,7 @@ public class BloomFilter {
             }
             if(j==k) countB++;
         }
-        System.out.println("Lookup count in B = "+countB);
+
         /** Write count and the table entries into a file */
         BufferedWriter writer = null;
         try {

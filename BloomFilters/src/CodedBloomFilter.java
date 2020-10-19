@@ -23,9 +23,10 @@ public class CodedBloomFilter {
 
         int[][] bloomFilters = new int[f][b];
         char[][] codes = new char[g][f];
-        fillSets(codes,g,f);
+        setsCode(codes,g,f);
 
         Helper helper = new Helper();
+
         /** Get random numbers for sets */
         Set<Integer> randSets = helper.getRandomSet(g*e, Integer.MAX_VALUE);
         int[][] sets = new int[g][e];
@@ -39,16 +40,8 @@ public class CodedBloomFilter {
             setIndex++;
 
         }
-        /** Get random numbers for hashes */
-        Set<Integer> randHashes = helper.getRandomSet(h,Integer.MAX_VALUE);
-        int h_i = 0;
-        int[] hashes = new int[h];
-        it = randHashes.iterator();
-        while(it.hasNext()){
-            /** store random numbers into the array */
-            hashes[h_i] = it.next();
-            h_i++;
-        }
+        /** Hashes */
+        int[] hashes = helper.getRandomArray(h,Integer.MAX_VALUE);
 
         /**For each set */
         for(int i=0;i<g;i++){
@@ -101,7 +94,7 @@ public class CodedBloomFilter {
 
             }
         }
-//        System.out.println(count);
+
         /** Write count and the table entries into a file */
         BufferedWriter writer = null;
         try {
@@ -113,7 +106,8 @@ public class CodedBloomFilter {
         }
     }
 
-    static void fillSets(char[][] codes, int g, int f){
+
+    static void setsCode(char[][] codes, int g, int f){
         for(int i=0;i<codes.length;i++){
             String str = Integer.toBinaryString(i+1);
             while(str.length()!=f)
