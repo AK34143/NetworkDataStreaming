@@ -1,4 +1,5 @@
 import java.util.HashSet;
+import java.util.Iterator;
 import java.util.Set;
 
 public class CountingBloomFilter {
@@ -11,11 +12,33 @@ public class CountingBloomFilter {
         int h = 7; // No. of hashes
 
         Helper helper = new Helper();
-        int[] elements_A = helper.getRandomArray(e,Integer.MAX_VALUE);
-        int[] hashes = helper.getRandomArray(h,Integer.MAX_VALUE);
+//        int[] elements_A = helper.getRandomArray(e,Integer.MAX_VALUE);
+//        int[] hashes = helper.getRandomArray(h,Integer.MAX_VALUE);
+
+        Set<Integer> randHashes = helper.getRandomSet(h,Integer.MAX_VALUE);
+        int h_i = 0;
+        int[] hashes = new int[h];
+        Iterator<Integer> it = randHashes.iterator();
+        while(it.hasNext()){
+            // store random numbers into the array
+            hashes[h_i] = it.next();
+            h_i++;
+        }
+
+        Set<Integer> randElementsA = helper.getRandomSet(e,Integer.MAX_VALUE);
+        int e_i = 0;
+        int[] elementsA = new int[e];
+        it = randElementsA.iterator();
+        while(it.hasNext()){
+            // store random numbers into the array
+            elementsA[e_i] = it.next();
+            e_i++;
+        }
+
+
         int[] filters = new int[c];
         for(int i=0;i<e;i++){/** For each element */
-            int element = elements_A[i];
+            int element = elementsA[i];
             for(int j=0;j<h;j++){
                 int index = element ^ hashes[j];
                 index = index % c;
@@ -31,7 +54,7 @@ public class CountingBloomFilter {
 //        System.out.println(count);
         /** Remove */
         for(int i=0;i<r;i++){
-            int element = elements_A[i];
+            int element = elementsA[i];
             for(int j=0;j<h;j++){
                 int index = element ^ hashes[j];
                 index = index % c;
@@ -39,7 +62,17 @@ public class CountingBloomFilter {
             }
         }
 
-        int[] new_elements = helper.getRandomArray(a,Integer.MAX_VALUE);
+//        int[] new_elements = helper.getRandomArray(a,Integer.MAX_VALUE);
+
+        Set<Integer> randElementsNew = helper.getRandomSet(a,Integer.MAX_VALUE);
+        e_i = 0;
+        int[] new_elements = new int[a];
+        it = randElementsNew.iterator();
+        while(it.hasNext()){
+            // store random numbers into the array
+            new_elements[e_i] = it.next();
+            e_i++;
+        }
 
         /** Add new randomly generated elements in filter */
         for(int i=0;i<a;i++){
@@ -53,22 +86,17 @@ public class CountingBloomFilter {
 
 
         /** Lookup */
-//        for(int i=0;i<c;i++){
-//            if(filters[i]>0)
-//                count++;
-//        }
-//        Set<Integer> indexes = new HashSet<>();
         int count = 0;
         for(int i=0;i<e;i++){/** For each element */
-            int element = elements_A[i];
+            int element = elementsA[i];
             int j=0;
             while(j<h){
                 int index = element ^ hashes[j];
                 index = index % c;
                 if(filters[index]==0) break;
-                j++
-//                if(filters[index]>0) indexes.add(index);
+                j++;
             }
+            if(j==h) count++;
         }
         System.out.println("Lookup count = "+count);
     }
