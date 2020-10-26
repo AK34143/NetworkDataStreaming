@@ -1,3 +1,5 @@
+import java.util.Random;
+
 public class ActiveCounter {
 
     public static void main(String[] args){
@@ -14,7 +16,7 @@ public class ActiveCounter {
         int Ce = 0;
         int prob_inc = 1;
         int bitSize = 16;
-
+        Random rand = new Random();
         while(i<N){
 //            getBinary(i,CnArr,CeArr,Cn,Ce,bitSize);
             String str = Integer.toBinaryString(Cn);
@@ -24,17 +26,21 @@ public class ActiveCounter {
 //            System.out.println(CeStr);
 //                CeArr = CeStr.toCharArray();
 //            CeStr = Integer.toBinaryString(Ce);
-                Cn = i;
-                Cn = Cn>>>1;
+                //Cn = i;
+                Cn = Cn>>>1;//Cn/2;
                 CnStr = Integer.toBinaryString(Cn);
+                System.out.println(i+" "+CnStr+" "+CeStr);
 //            System.out.println(CnStr);
 //                CnArr = CnStr.toCharArray();
 //            CnStr = Integer.toBinaryString(Cn);
             } else {
                 CnStr = Integer.toBinaryString(Cn);
 //                CnArr = Integer.toBinaryString(Cn).toCharArray();
-                System.out.println(i+" "+CnStr);
-                Cn++;
+                System.out.println(i+" "+CnStr+" "+CeStr);
+
+                boolean val = rand.nextInt((int)Math.pow(2,Ce))==0;
+                if(val)
+                    Cn++;
             }
             i++;
         }
@@ -47,8 +53,9 @@ public class ActiveCounter {
 //            System.out.print(CeStr.charAt(j));
 //        }
 //        System.out.println();
-        System.out.println(Cn+"."+Ce);
-
+//        System.out.println(Cn+"."+Ce);
+        int ans = Cn * (int)Math.pow(2,Ce);
+        System.out.println(ans);
     }
 
     static void getBinary(int i, char[] CnArr, char[] CeArr,int Cn,int Ce, int bitSize){

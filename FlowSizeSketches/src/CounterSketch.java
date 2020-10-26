@@ -40,9 +40,10 @@ public class CounterSketch {
             for(int n=0;n<N;n++) {
                 for (int i = 0; i < k; i++) {
                     int index = RandomFlow[n] ^ HashFunctions[i];//(flowId.hashCode() & 0xfffffff)
-                    int bit = (index & 0xff) >> 7;
+//                    int bit = (index & 0xff) >> 7;
+                    char bit = msb(index,32);
                     index = index % w;
-                    if (bit == 1)
+                    if (bit == '1')
                         C[i][index] += packetsizes[n];
                     else
                         C[i][index] -= packetsizes[n];
@@ -60,10 +61,10 @@ public class CounterSketch {
                 int[] nfcaps = new int[k];
                 for(int i=0;i<k;i++){
                     int index = RandomFlow[n] ^ HashFunctions[i];//(flows[n].hashCode() & 0xfffffff)
-                    int bit = (index & 0xff) >> 7;
-//                    char bit = msb(index,32);
+//                    int bit = (index & 0xff) >> 7;
+                    char bit = msb(index,32);
                     index = index % w;
-                    nfcaps[i] = (bit==1) ? C[i][index] : -1*C[i][index];
+                    nfcaps[i] = (bit=='1') ? C[i][index] : -1*C[i][index];
                 }
                 Arrays.sort(nfcaps);
                 int median;
@@ -71,7 +72,7 @@ public class CounterSketch {
                     median = (nfcaps[k/2] + nfcaps[k/2 - 1])/2;
                 else
                     median = nfcaps[k/2];
-                total += median;
+                total += Math.abs(median);
             }
             System.out.println(total/N);
 
