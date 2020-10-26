@@ -7,7 +7,7 @@ public class ActiveCounter {
         String CnStr=null;
         String CeStr=null;
 
-        int N = 100000;//1000000;
+        int N = 1000000;
 
         int i=0;
         int Cn = 0;
@@ -39,14 +39,14 @@ public class ActiveCounter {
             i++;
         }
 
-        for(int j=0;j< CnStr.length();j++){
-            System.out.print(CnStr.charAt(j));
-        }
-        System.out.print('.');
-        for(int j=0;j< CeStr.length();j++){
-            System.out.print(CeStr.charAt(j));
-        }
-        System.out.println();
+//        for(int j=0;j< CnStr.length();j++){
+//            System.out.print(CnStr.charAt(j));
+//        }
+//        System.out.print('.');
+//        for(int j=0;j< CeStr.length();j++){
+//            System.out.print(CeStr.charAt(j));
+//        }
+//        System.out.println();
         System.out.println(Cn+"."+Ce);
 
     }
