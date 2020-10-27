@@ -49,10 +49,14 @@ public class CountMin {
         Scanner myReader = new Scanner(myObj);
         String data = myReader.nextLine();
         int N = Integer.valueOf(data);
-       int[] RandomFlow = helper.getRandomArray(N,Integer.MAX_VALUE);
-       int f=0;
-       Flow[] flows = new Flow[N];
 
+        /** Generate unique random flow ids that associate with each flow */
+        int[] RandomFlow = helper.getRandomArray(N,Integer.MAX_VALUE);
+
+        int f=0;
+        Flow[] flows = new Flow[N];
+
+        /** Read each, create a flow node and add to flows array */
         while (myReader.hasNextLine()) {
             data = myReader.nextLine();
             String[] flow = data.split("\\s+");
@@ -62,13 +66,7 @@ public class CountMin {
             f++;
         }
 
-//            for(int i=0;i<k;i++){
-//                for(int j=0;j<w;j++){
-//                    System.out.print(C[i][j]+" ");
-//                }
-//                System.out.println();
-//            }
-
+        /** Generate Counter array */
         int total = 0;
         for(int n=0;n<N;n++) {
             for (int i = 0; i < k; i++) {
@@ -77,6 +75,8 @@ public class CountMin {
                 C[i][index] += flows[n].getTrueSize();//packetsizes[n];
             }
         }
+
+        /**  */
         for(int n=0;n<N;n++){
             int nfcap = Integer.MAX_VALUE;
             for(int i=0;i<k;i++){
