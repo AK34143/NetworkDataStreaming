@@ -36,6 +36,10 @@ public class CountMin {
     public static void main(String[] args) throws FileNotFoundException {
         int k = 3;
         int w = 3000;
+        if(args.length==2){
+            k = Integer.parseInt(args[0]);
+            w = Integer.parseInt(args[1]);
+        }
         Helper helper = new Helper();
         int[] HashFunctions = helper.getRandomArray(k,Integer.MAX_VALUE);
 
@@ -107,7 +111,7 @@ public class CountMin {
             writer.write("Flow Id   True Size   Estimated Size\n");
             while(!heap.isEmpty()){
                 Flow fl = heap.poll();
-                writer.write(fl.FlowId+";\t\t"+fl.trueSize+"\t"+fl.estimatedSize+"\n");
+                writer.write(fl.FlowId+"\t\t"+fl.trueSize+"\t"+fl.estimatedSize+"\n");
             }
             writer.close();
         } catch (IOException ex) {

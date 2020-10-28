@@ -6,9 +6,12 @@ public class CounterSketch {
     public static void main(String[] args) throws FileNotFoundException {
         int k = 3;
         int w = 3000;
-        int[] HashFunctions = new int[k];
+        if(args.length==2){
+            k = Integer.parseInt(args[0]);
+            w = Integer.parseInt(args[1]);
+        }
         Helper helper = new Helper();
-        HashFunctions = helper.getRandomArray(k,Integer.MAX_VALUE);
+        int[] HashFunctions = helper.getRandomArray(k,Integer.MAX_VALUE);
 
         int[][] C = new int[k][w];
         Queue<Flow> heap = new PriorityQueue<>(
@@ -51,12 +54,12 @@ public class CounterSketch {
             }
         }
 
-        for(int i=0;i<k;i++){
-            for(int j=0;j<w;j++){
-                System.out.print(C[i][j]+" ");
-            }
-            System.out.println();
-        }
+//        for(int i=0;i<k;i++){
+//            for(int j=0;j<w;j++){
+//                System.out.print(C[i][j]+" ");
+//            }
+//            System.out.println();
+//        }
 
         int total = 0;
         for(int n=0;n<N;n++){
@@ -66,7 +69,7 @@ public class CounterSketch {
 //                    int bit = (index & 0xff) >> 7;
                 char bit = msb(index,32);
                 index = index % w;
-                nfcaps[i] = (bit=='1') ? C[i][index] : Math.abs(C[i][index]);
+                nfcaps[i] = (bit=='1') ? C[i][index] : -1*(C[i][index]);
             }
             Arrays.sort(nfcaps);
             int median;
@@ -79,8 +82,8 @@ public class CounterSketch {
             if (heap.size() > 100) heap.poll();
             total += median;
         }
-//            System.out.println(total/N);
-//
+            System.out.println(total/N);
+
 //            System.out.println("Top 100 elements");
 //            while(!heap.isEmpty()){
 //                Flow fl = heap.poll();
@@ -96,7 +99,7 @@ public class CounterSketch {
             writer.write("Flow Id   True Size   Estimated Size\n");
             while(!heap.isEmpty()){
                 Flow fl = heap.poll();
-                writer.write(fl.FlowId+";\t\t"+fl.trueSize+"\t"+fl.estimatedSize+"\n");
+                writer.write(fl.FlowId+"\t\t"+fl.trueSize+"\t"+fl.estimatedSize+"\n");
             }
             writer.close();
         } catch (IOException ex) {
@@ -115,9 +118,9 @@ public class CounterSketch {
 //            HashToBits[i] = str;
 //        }
         String str = Integer.toBinaryString(i);
-        while(str.length()<bitSize-1)
+        while(str.length()<bitSize)
             str = '0'+str;
-        System.out.println(str);
+//        System.out.println(str);
         return str.charAt(1);
     }
 }

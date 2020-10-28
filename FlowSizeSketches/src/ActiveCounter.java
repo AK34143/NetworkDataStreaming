@@ -6,10 +6,15 @@ import java.util.Random;
 public class ActiveCounter {
 
     public static void main(String[] args){
+        int bitSize = 16;
+
+        if(args.length==1){
+            bitSize = Integer.parseInt(args[0]);
+        }
+
         int N = 1000000;
         int Cn = 0;
         int Ce = 0;
-        int bitSize = 16;
         Random rand = new Random();
 
         /** Increase the active counter by one for N times */
