@@ -1,6 +1,4 @@
 Name : Aarthi Kashikar <br/>
-UFID : 03668968
-
 
 This project contains 3 java classes:
 1) BloomFilter.java that implements Bloom Filter
